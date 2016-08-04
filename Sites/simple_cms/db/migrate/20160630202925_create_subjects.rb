@@ -3,7 +3,7 @@ class CreateSubjects < ActiveRecord::Migration
     create_table :subjects do |t|
       t.column "name", :string
       t.integer "position"
-      t.boolean "visible"
+      t.boolean "visible", :default => false
 
       t.timestamps null: false
     end

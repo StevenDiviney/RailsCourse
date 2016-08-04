@@ -1,17 +1,16 @@
 class CreateSections < ActiveRecord::Migration
-  def up
+  def change
     create_table :sections do |t|
-      t.column "name", :string
+      t.integer "page_id"
+      # same as: t.references :page
+      t.string "name"
       t.integer "position"
       t.boolean "visible"
-      t.string "comment-type"
+      t.string "content_type"
       t.text "content"
-
-      t.timestamps null: false
+      t.timestamps
     end
+    add_index("sections", "page_id")
   end
 
-  def down
-    drop_table :pages
-  end
 end

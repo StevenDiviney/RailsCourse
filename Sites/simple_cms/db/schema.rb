@@ -14,38 +14,37 @@
 ActiveRecord::Schema.define(version: 20160729191630) do
 
   create_table "pages", force: :cascade do |t|
+    t.integer  "subject_id", limit: 4
     t.string   "name",       limit: 255
     t.string   "permalink",  limit: 255
     t.integer  "position",   limit: 4
     t.boolean  "visible"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
-    t.integer  "subject_id", limit: 4
   end
 
+  add_index "pages", ["permalink"], name: "index_pages_on_permalink", using: :btree
   add_index "pages", ["subject_id"], name: "index_pages_on_subject_id", using: :btree
 
   create_table "sections", force: :cascade do |t|
+    t.integer  "page_id",      limit: 4
     t.string   "name",         limit: 255
     t.integer  "position",     limit: 4
     t.boolean  "visible"
-    t.string   "comment-type", limit: 255
+    t.string   "content_type", limit: 255
     t.text     "content",      limit: 65535
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.integer  "pages_id",     limit: 4
-    t.integer  "page_id",      limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "sections", ["page_id"], name: "index_sections_on_page_id", using: :btree
-  add_index "sections", ["pages_id"], name: "index_sections_on_pages_id", using: :btree
 
   create_table "subjects", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.integer  "position",   limit: 4
-    t.boolean  "visible"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.boolean  "visible",                default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -60,6 +59,4 @@ ActiveRecord::Schema.define(version: 20160729191630) do
 
   add_index "users", ["username"], name: "index_users_on_username", using: :btree
 
-  add_foreign_key "pages", "subjects"
-  add_foreign_key "sections", "pages"
 end
